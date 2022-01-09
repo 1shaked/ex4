@@ -29,13 +29,15 @@ int main(int argc, const char * argv[]) {
     ClassRoom classRome;
     printf("Hello, please enter teacher name:\n");
     char* teacherName = (char*) malloc(NUMBER_OF_CHAR * sizeof(char));
+    if (teacherName == NULL) return 1;
     scanf("%s", teacherName);
     int teacherLen = (int) strlen(teacherName) + 1;
     // release the memory
     classRome.teacherName = (char*) realloc(teacherName, teacherLen * sizeof(char));
+    if (classRome.teacherName == NULL) return 1;
     classRome.studentsNumber = 0;
     printf("Would you like to add a student (1) yes (else) no?\n");
-    int doYouWantToPlay = 0 ;
+    int doYouWantToPlay = 0;
     scanf("%d" , &doYouWantToPlay);
     
     int lowestAvgIndex = NOT_DEFIND_INDEX;
@@ -45,9 +47,11 @@ int main(int argc, const char * argv[]) {
         Student tempStudent;
         printf("Student username?\n");
         char* studentName = (char*) malloc(NUMBER_OF_CHAR * sizeof(char));
+        if (studentName == NULL) return 1;
         scanf("%s", studentName);
         int studentNameLen =  ((int) strlen(studentName)) + 1;
         tempStudent.username = (char*) realloc(studentName,studentNameLen * sizeof(char));
+        if (tempStudent.username == NULL) return 1;
         // tempStudent.username = studentName;
         
         printf("Student ID?\n");
@@ -55,6 +59,7 @@ int main(int argc, const char * argv[]) {
         printf("Student Grades?\n");
         // this will reinit the grades location
         tempStudent.grades = (int*) malloc(NUMBER_OF_GRADES * sizeof(int));
+        if (tempStudent.grades == NULL) return 1;
         tempStudent.avrage = 0;
         int gradeIndex = 0;
         for (; gradeIndex < NUMBER_OF_GRADES; gradeIndex++) {
@@ -70,6 +75,7 @@ int main(int argc, const char * argv[]) {
             classRome.students = (Student*) malloc(sizeof(Student));
         }
         else classRome.students = (Student*) realloc(classRome.students ,classRome.studentsNumber * sizeof(Student));
+        if (classRome.students == NULL) return 1;
         int lastIndex = classRome.studentsNumber - 1;
         classRome.students[lastIndex].username = tempStudent.username;
         classRome.students[lastIndex].grades = tempStudent.grades;
