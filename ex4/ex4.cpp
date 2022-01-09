@@ -35,13 +35,13 @@ int main(int argc, const char * argv[]) {
     classRome.teacherName = (char*) realloc(teacherName, teacherLen * sizeof(char));
     classRome.studentsNumber = 0;
     printf("Would you like to add a student (1) yes (else) no?\n");
-    char doYouWantToPlay = '0';
-    scanf("%c" , &doYouWantToPlay);
+    int doYouWantToPlay = 0 ;
+    scanf("%d" , &doYouWantToPlay);
     
     int lowestAvgIndex = NOT_DEFIND_INDEX;
     int highestAvgIndex = NOT_DEFIND_INDEX;
     // free(teacherName);
-    while (doYouWantToPlay == '1') {
+    while (doYouWantToPlay == 1) {
         Student tempStudent;
         printf("Student username?\n");
         char* studentName = (char*) malloc(NUMBER_OF_CHAR * sizeof(char));
@@ -84,22 +84,22 @@ int main(int argc, const char * argv[]) {
         
         
         printf("Would you like to add a student (1) yes (else) no?\n");
-        scanf("%c" , &doYouWantToPlay);
+        scanf("%d" , &doYouWantToPlay);
         // remove the pointer of the temp studnet to
     }
     // if (highestAvgIndex == lowestAvgIndex) {}
     if (classRome.studentsNumber) {
         printf("There are %d students in the class.\n" , classRome.studentsNumber);
         Student bestStudent = classRome.students[highestAvgIndex], workStudent = classRome.students[lowestAvgIndex];
-        printf("Best student is %s, with ID of %d. Average is %f\n", bestStudent.username, bestStudent.id, bestStudent.avrage);
-        printf("Worst student is %s, with ID of %d. Average is %f\n", workStudent.username, workStudent.id, workStudent.avrage);
+        printf("Best student is %s, with ID of %d. Average is %f.\n", bestStudent.username, bestStudent.id, bestStudent.avrage);
+        printf("Worst student is %s, with ID of %d. Average is %f.\n", workStudent.username, workStudent.id, workStudent.avrage);
         // get class avg
         int i = 0;
         float classAvg = 0;
         for (; i < classRome.studentsNumber; i++) {
             classAvg = classAvg + ( (float) classRome.students[i].avrage / classRome.studentsNumber );
         }
-        printf("Class average is %f\n", classAvg);
+        printf("Class average is %f.\n", classAvg);
         printf("Teacher is %s\n", classRome.teacherName);
         printf("Students are:\n");
         int index = 0;

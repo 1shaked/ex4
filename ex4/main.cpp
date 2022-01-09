@@ -1,15 +1,14 @@
-//
-//  main.cpp
-//  ex4
-//
-//  Created by shaked chen on 02/01/2022.
-//
-
+/******************************************
+* Shaked Chen
+* 207253220
+* 83-120-01
+* Ex 4
+******************************************/
 typedef struct {
     char* username;
     int id;
     int* grades;
-    double avrage;
+    float avrage;
 } Student;
 
 typedef struct {
@@ -22,6 +21,7 @@ typedef struct {
 #include <string.h>
 #include <stdio.h>
 // #include <malloc.h>
+
 #define NUMBER_OF_GRADES 4
 #define NUMBER_OF_CHAR 80
 #define NOT_DEFIND_INDEX -1
@@ -52,17 +52,17 @@ int main(int argc, const char * argv[]) {
         
         printf("Student ID?\n");
         scanf("%d", &tempStudent.id);
+        printf("Student Grades?\n");
         // this will reinit the grades location
         tempStudent.grades = (int*) malloc(NUMBER_OF_GRADES * sizeof(int));
-        tempStudent.avrage = 0.0;
+        tempStudent.avrage = 0;
         int gradeIndex = 0;
         for (; gradeIndex < NUMBER_OF_GRADES; gradeIndex++) {
             int grade;
             scanf("%d", &grade);
             tempStudent.grades[gradeIndex] = grade;
             // to reduce the amount of loops needed and calculate each grade effect
-            double gradeWight = (double) grade / NUMBER_OF_GRADES;
-            tempStudent.avrage = tempStudent.avrage + gradeWight;
+            tempStudent.avrage = tempStudent.avrage + ( (float) grade / NUMBER_OF_GRADES);
         }
         
         classRome.studentsNumber = classRome.studentsNumber + 1;
@@ -89,27 +89,27 @@ int main(int argc, const char * argv[]) {
     }
     // if (highestAvgIndex == lowestAvgIndex) {}
     if (classRome.studentsNumber) {
+        printf("There are %d students in the class.\n" , classRome.studentsNumber);
         Student bestStudent = classRome.students[highestAvgIndex], workStudent = classRome.students[lowestAvgIndex];
-        printf("Best student is %s, with ID of %d. Average is %f\n", bestStudent.username, bestStudent.id, bestStudent.avrage);
-        printf("Worst student is %s, with ID of %d. Average is %f\n", workStudent.username, workStudent.id, workStudent.avrage);
+        printf("Best student is %s, with ID of %d. Average is %f.\n", bestStudent.username, bestStudent.id, bestStudent.avrage);
+        printf("Worst student is %s, with ID of %d. Average is %f.\n", workStudent.username, workStudent.id, workStudent.avrage);
         // get class avg
         int i = 0;
         float classAvg = 0;
         for (; i < classRome.studentsNumber; i++) {
-            classAvg = classAvg + classRome.students[i].avrage / classRome.studentsNumber;
+            classAvg = classAvg + ( (float) classRome.students[i].avrage / classRome.studentsNumber );
         }
-        printf("Class average is %f\n", classAvg);
+        printf("Class average is %f.\n", classAvg);
         printf("Teacher is %s\n", classRome.teacherName);
-        free(classRome.teacherName);
         printf("Students are:\n");
         int index = 0;
         for (; index < classRome.studentsNumber; index++) {
             printf("%s\n", classRome.students[index].username);
-            free(classRome.students[index].username);
-            free(classRome.students[index].grades);
         }
-        free(classRome.students);
-        
+    }
+    else {
+        printf("There are 0 students in the class.\n");
+        printf("There are no students.\n");
     }
     return 0;
 }
