@@ -20,7 +20,8 @@ typedef struct {
 #include <iostream>
 #include <string.h>
 #include <stdio.h>
-// #include <malloc.h>
+#include <malloc.h>
+
 #define NUMBER_OF_GRADES 4
 #define NUMBER_OF_CHAR 80
 #define NOT_DEFIND_INDEX -1
@@ -34,13 +35,13 @@ int main(int argc, const char * argv[]) {
     classRome.teacherName = (char*) realloc(teacherName, teacherLen * sizeof(char));
     classRome.studentsNumber = 0;
     printf("Would you like to add a student (1) yes (else) no?\n");
-    int doYouWantToPlay = 0;
-    scanf("%d" , &doYouWantToPlay);
+    char doYouWantToPlay = '0';
+    scanf("%c" , &doYouWantToPlay);
     
     int lowestAvgIndex = NOT_DEFIND_INDEX;
     int highestAvgIndex = NOT_DEFIND_INDEX;
     // free(teacherName);
-    while (doYouWantToPlay == 1) {
+    while (doYouWantToPlay == '1') {
         Student tempStudent;
         printf("Student username?\n");
         char* studentName = (char*) malloc(NUMBER_OF_CHAR * sizeof(char));
@@ -51,6 +52,7 @@ int main(int argc, const char * argv[]) {
         
         printf("Student ID?\n");
         scanf("%d", &tempStudent.id);
+        printf("Student Grades?\n");
         // this will reinit the grades location
         tempStudent.grades = (int*) malloc(NUMBER_OF_GRADES * sizeof(int));
         tempStudent.avrage = 0;
@@ -60,7 +62,7 @@ int main(int argc, const char * argv[]) {
             scanf("%d", &grade);
             tempStudent.grades[gradeIndex] = grade;
             // to reduce the amount of loops needed and calculate each grade effect
-            tempStudent.avrage = tempStudent.avrage + grade / NUMBER_OF_GRADES;
+            tempStudent.avrage = tempStudent.avrage + ( (float) grade / NUMBER_OF_GRADES);
         }
         
         classRome.studentsNumber = classRome.studentsNumber + 1;
@@ -82,11 +84,12 @@ int main(int argc, const char * argv[]) {
         
         
         printf("Would you like to add a student (1) yes (else) no?\n");
-        scanf("%d" , &doYouWantToPlay);
+        scanf("%c" , &doYouWantToPlay);
         // remove the pointer of the temp studnet to
     }
     // if (highestAvgIndex == lowestAvgIndex) {}
     if (classRome.studentsNumber) {
+        printf("There are %d students in the class.\n" , classRome.studentsNumber);
         Student bestStudent = classRome.students[highestAvgIndex], workStudent = classRome.students[lowestAvgIndex];
         printf("Best student is %s, with ID of %d. Average is %f\n", bestStudent.username, bestStudent.id, bestStudent.avrage);
         printf("Worst student is %s, with ID of %d. Average is %f\n", workStudent.username, workStudent.id, workStudent.avrage);
@@ -94,7 +97,7 @@ int main(int argc, const char * argv[]) {
         int i = 0;
         float classAvg = 0;
         for (; i < classRome.studentsNumber; i++) {
-            classAvg = classAvg + classRome.students[i].avrage / classRome.studentsNumber;
+            classAvg = classAvg + ( (float) classRome.students[i].avrage / classRome.studentsNumber );
         }
         printf("Class average is %f\n", classAvg);
         printf("Teacher is %s\n", classRome.teacherName);
@@ -103,7 +106,10 @@ int main(int argc, const char * argv[]) {
         for (; index < classRome.studentsNumber; index++) {
             printf("%s\n", classRome.students[index].username);
         }
-        
+    }
+    else {
+        printf("There are 0 students in the class.\n");
+        printf("There are no students.\n");
     }
     return 0;
 }

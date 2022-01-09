@@ -9,7 +9,7 @@ typedef struct {
     char* username;
     int id;
     int* grades;
-    float avrage;
+    double avrage;
 } Student;
 
 typedef struct {
@@ -54,14 +54,15 @@ int main(int argc, const char * argv[]) {
         scanf("%d", &tempStudent.id);
         // this will reinit the grades location
         tempStudent.grades = (int*) malloc(NUMBER_OF_GRADES * sizeof(int));
-        tempStudent.avrage = 0;
+        tempStudent.avrage = 0.0;
         int gradeIndex = 0;
         for (; gradeIndex < NUMBER_OF_GRADES; gradeIndex++) {
             int grade;
             scanf("%d", &grade);
             tempStudent.grades[gradeIndex] = grade;
             // to reduce the amount of loops needed and calculate each grade effect
-            tempStudent.avrage = tempStudent.avrage + grade / NUMBER_OF_GRADES;
+            double gradeWight = (double) grade / NUMBER_OF_GRADES;
+            tempStudent.avrage = tempStudent.avrage + gradeWight;
         }
         
         classRome.studentsNumber = classRome.studentsNumber + 1;
@@ -99,11 +100,15 @@ int main(int argc, const char * argv[]) {
         }
         printf("Class average is %f\n", classAvg);
         printf("Teacher is %s\n", classRome.teacherName);
+        free(classRome.teacherName);
         printf("Students are:\n");
         int index = 0;
         for (; index < classRome.studentsNumber; index++) {
             printf("%s\n", classRome.students[index].username);
+            free(classRome.students[index].username);
+            free(classRome.students[index].grades);
         }
+        free(classRome.students);
         
     }
     return 0;
