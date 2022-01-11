@@ -31,10 +31,9 @@ void setStudent(ClassRoom *cls,int index ,Student *student);
 int main(int argc, const char * argv[]) {
     ClassRoom classRome;
     printf("Hello, please enter teacher name:\n");
-    char teacherName[80];
+    char teacherName[NUMBER_OF_CHAR];
     scanf("%s", teacherName);
     setClassRome(&classRome, teacherName);
-    if (classRome.teacherName == NULL) return 1;
     printf("Would you like to add a student (1) yes (else) no?\n");
     int doYouWantToPlay = 0;
     scanf("%d" , &doYouWantToPlay);
@@ -120,6 +119,7 @@ The function operation: setting the class rome inital values tracher name, stude
 ************************************************************************/
 void setClassRome(ClassRoom *cls,char *teacherName) {
     (*cls).teacherName = (char*) malloc((strlen(teacherName) + 1) * sizeof(char));
+    if ((*cls).teacherName == NULL) exit(1);
     strcpy(cls->teacherName, teacherName);
     cls->studentsNumber = 0;
     cls->students = NULL;
@@ -134,4 +134,5 @@ void setStudent(ClassRoom *cls,int index ,Student *student) {
     (cls->students + index)->username = student->username;
     (cls->students + index)->grades = student->grades;
     (cls->students + index)->average = student->average;
+    (cls->students + index)->id = student->id;
 }
