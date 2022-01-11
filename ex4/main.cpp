@@ -27,7 +27,7 @@ typedef struct {
     int studentsNumber;
 } ClassRoom;
 void setClassRome(ClassRoom *cls,char *teacherName);
-
+void setStudent(ClassRoom *cls,int index ,Student *student);
 int main(int argc, const char * argv[]) {
     ClassRoom classRome;
     printf("Hello, please enter teacher name:\n");
@@ -42,18 +42,20 @@ int main(int argc, const char * argv[]) {
     int lowestAvgIndex = NOT_DEFIND_INDEX;
     int highestAvgIndex = NOT_DEFIND_INDEX;
     while (doYouWantToPlay == 1) {
+        // creating temp student
         Student tempStudent;
         printf("Student username?\n");
         char* studentName = (char*) malloc(NUMBER_OF_CHAR * sizeof(char));
         if (studentName == NULL) return 1;
         scanf("%s", studentName);
         int studentNameLen =  ((int) strlen(studentName)) + 1;
+        // take the min char for the student
         tempStudent.username = (char*) realloc(studentName,studentNameLen * sizeof(char));
         if (tempStudent.username == NULL) return 1;
         printf("Student ID?\n");
         scanf("%d", &tempStudent.id);
         printf("Student Grades?\n");
-        // this will reinit the grades location
+        // this will re init the grades location
         tempStudent.grades = (int*) malloc(NUMBER_OF_GRADES * sizeof(int));
         if (tempStudent.grades == NULL) return 1;
         tempStudent.average = 0;
@@ -70,11 +72,8 @@ int main(int argc, const char * argv[]) {
         else classRome.students = (Student*) realloc(classRome.students ,classRome.studentsNumber * sizeof(Student));
         if (classRome.students == NULL) return 1;
         int lastIndex = classRome.studentsNumber - 1;
-        (classRome.students + lastIndex)->username = tempStudent.username;
-        (classRome.students + lastIndex)->grades = tempStudent.grades;
+        setStudent(&classRome, lastIndex, &tempStudent);
         float average = tempStudent.average;
-        (classRome.students + lastIndex)->average = average;
-        (classRome.students + lastIndex)->id = tempStudent.id;
         // setting the best and the worst student
         if (lowestAvgIndex == NOT_DEFIND_INDEX) lowestAvgIndex = lastIndex;
         else if ((classRome.students + lowestAvgIndex)->average > average) lowestAvgIndex = lastIndex;
@@ -124,5 +123,15 @@ void setClassRome(ClassRoom *cls,char *teacherName) {
     strcpy(cls->teacherName, teacherName);
     cls->studentsNumber = 0;
     cls->students = NULL;
-    
+}
+/*********************************************************************
+Function name: setStudent
+Input: ClassRoom *cls,int index ,Student *student
+Output: void
+The function operation: setting a new student or a change a current one in the array
+************************************************************************/
+void setStudent(ClassRoom *cls,int index ,Student *student) {
+    (cls->students + index)->username = student->username;
+    (cls->students + index)->grades = student->grades;
+    (cls->students + index)->average = student->average;
 }

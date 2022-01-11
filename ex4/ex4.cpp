@@ -34,11 +34,9 @@ int main(int argc, const char * argv[]) {
     char teacherName[80];
     scanf("%s", teacherName);
     setClassRome(&classRome, teacherName);
-    if (classRome.teacherName == NULL) return 1;
     printf("Would you like to add a student (1) yes (else) no?\n");
     int doYouWantToPlay = 0;
     scanf("%d" , &doYouWantToPlay);
-    
     int lowestAvgIndex = NOT_DEFIND_INDEX;
     int highestAvgIndex = NOT_DEFIND_INDEX;
     while (doYouWantToPlay == 1) {
@@ -121,6 +119,7 @@ The function operation: setting the class rome inital values tracher name, stude
 ************************************************************************/
 void setClassRome(ClassRoom *cls,char *teacherName) {
     (*cls).teacherName = (char*) malloc((strlen(teacherName) + 1) * sizeof(char));
+    if ((*cls).teacherName == NULL) exit(1);
     strcpy(cls->teacherName, teacherName);
     cls->studentsNumber = 0;
     cls->students = NULL;
