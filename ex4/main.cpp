@@ -70,30 +70,29 @@ int main(int argc, const char * argv[]) {
         else classRome.students = (Student*) realloc(classRome.students ,classRome.studentsNumber * sizeof(Student));
         if (classRome.students == NULL) return 1;
         int lastIndex = classRome.studentsNumber - 1;
-        classRome.students[lastIndex].username = tempStudent.username;
-        classRome.students[lastIndex].grades = tempStudent.grades;
+        (classRome.students + lastIndex)->username = tempStudent.username;
+        (classRome.students + lastIndex)->grades = tempStudent.grades;
         float average = tempStudent.average;
-        classRome.students[lastIndex].average = tempStudent.average;
-        classRome.students[lastIndex].id = tempStudent.id;
+        (classRome.students + lastIndex)->average = average;
+        (classRome.students + lastIndex)->id = tempStudent.id;
         // setting the best and the worst student
         if (lowestAvgIndex == NOT_DEFIND_INDEX) lowestAvgIndex = lastIndex;
-        else if (classRome.students[lowestAvgIndex].average > average) lowestAvgIndex = lastIndex;
+        else if ((classRome.students + lowestAvgIndex)->average > average) lowestAvgIndex = lastIndex;
         if (highestAvgIndex == NOT_DEFIND_INDEX) highestAvgIndex = lastIndex;
-        else if (classRome.students[highestAvgIndex].average < average) highestAvgIndex = lastIndex;
+        else if ((classRome.students + highestAvgIndex)->average < average) highestAvgIndex = lastIndex;
         printf("Would you like to add a student (1) yes (else) no?\n");
         scanf("%d" , &doYouWantToPlay);
     }
+    // check if there is no students and if are print and free them
     if (classRome.studentsNumber) {
         printf("There are %d students in the class.\n" , classRome.studentsNumber);
-        Student bestStudent = classRome.students[highestAvgIndex], workStudent = classRome.students[lowestAvgIndex];
-        printf("Best student is %s, with ID of %d. Average is %f.\n", bestStudent.username, bestStudent.id, bestStudent.average);
-        printf("Worst student is %s, with ID of %d. Average is %f.\n", workStudent.username, workStudent.id, workStudent.average);
+        Student *bestStudent = classRome.students + highestAvgIndex, *workStudent = classRome.students + lowestAvgIndex;
+        printf("Best student is %s, with ID of %d. Average is %f.\n", bestStudent->username, bestStudent->id, bestStudent->average);
+        printf("Worst student is %s, with ID of %d. Average is %f.\n", workStudent->username, workStudent->id, workStudent->average);
         // get class avg
         int i = 0;
         float classAvg = 0;
-        for (; i < classRome.studentsNumber; i++) {
-            classAvg = classAvg + ( (float) classRome.students[i].average / classRome.studentsNumber );
-        }
+        for (; i < classRome.studentsNumber; i++) classAvg = classAvg + ( (float) (classRome.students + i)->average / classRome.studentsNumber );
         printf("Class average is %f.\n", classAvg);
         printf("Teacher is %s\n", classRome.teacherName);
         printf("Students are:\n");
@@ -101,28 +100,20 @@ int main(int argc, const char * argv[]) {
         for (; index < classRome.studentsNumber; index++) {
             Student *studentDelete = classRome.students+index;
             printf("%s\n", studentDelete->username);
-            /*
-             free(studentDelete->username);
-             printf("%s\n", studentDelete->username);
-             free(studentDelete->grades);
-             printf("%d", studentDelete->grades[0]);
-             */
-            studentDelete->grades = (int*) realloc(studentDelete->grades, 0);
-            studentDelete->username = (char*)realloc(studentDelete->username, 0);
-            printf("%s\n", studentDelete->username);
+            free(studentDelete->username);
+            free(studentDelete->grades);
         }
-        classRome.teacherName = (char*) realloc(classRome.teacherName, 0);
-        // free(classRome.teacherName);
-        classRome.students = (Student*) realloc(classRome.students, 0);
-        // free(classRome.students);
+        free(classRome.students);
     }
     else {
         printf("There are 0 students in the class.\n");
         printf("There are no students.\n");
     }
+    // free the teacher name here because I created the teacher name dynamically and here is better the one in the if and one in the else.
+    free(classRome.teacherName);
     return 0;
 }
-/*************************************************************************
+/*********************************************************************
 Function name: setClassRome
 Input: ClassRoom *cls,char *teacherName
 Output: void
