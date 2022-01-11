@@ -18,7 +18,7 @@ typedef struct {
     char* username;
     int id;
     int* grades;
-    float avrage;
+    float average;
 } Student;
 
 typedef struct {
@@ -56,14 +56,14 @@ int main(int argc, const char * argv[]) {
         // this will reinit the grades location
         tempStudent.grades = (int*) malloc(NUMBER_OF_GRADES * sizeof(int));
         if (tempStudent.grades == NULL) return 1;
-        tempStudent.avrage = 0;
+        tempStudent.average = 0;
         int gradeIndex = 0;
         for (; gradeIndex < NUMBER_OF_GRADES; gradeIndex++) {
             int grade;
             scanf("%d", &grade);
             *(tempStudent.grades + gradeIndex) = grade;
             // to reduce the amount of loops needed and calculate each grade effect
-            tempStudent.avrage = tempStudent.avrage + ( (float) grade / NUMBER_OF_GRADES);
+            tempStudent.average = tempStudent.average + ( (float) grade / NUMBER_OF_GRADES);
         }
         classRome.studentsNumber = classRome.studentsNumber + 1;
         if (classRome.studentsNumber == 1) classRome.students = (Student*) malloc(sizeof(Student));
@@ -72,27 +72,27 @@ int main(int argc, const char * argv[]) {
         int lastIndex = classRome.studentsNumber - 1;
         classRome.students[lastIndex].username = tempStudent.username;
         classRome.students[lastIndex].grades = tempStudent.grades;
-        float avrage = tempStudent.avrage;
-        classRome.students[lastIndex].avrage = tempStudent.avrage;
+        float average = tempStudent.average;
+        classRome.students[lastIndex].average = tempStudent.average;
         classRome.students[lastIndex].id = tempStudent.id;
         // setting the best and the worst student
         if (lowestAvgIndex == NOT_DEFIND_INDEX) lowestAvgIndex = lastIndex;
-        else if (classRome.students[lowestAvgIndex].avrage > avrage) lowestAvgIndex = lastIndex;
+        else if (classRome.students[lowestAvgIndex].average > average) lowestAvgIndex = lastIndex;
         if (highestAvgIndex == NOT_DEFIND_INDEX) highestAvgIndex = lastIndex;
-        else if (classRome.students[highestAvgIndex].avrage < avrage) highestAvgIndex = lastIndex;
+        else if (classRome.students[highestAvgIndex].average < average) highestAvgIndex = lastIndex;
         printf("Would you like to add a student (1) yes (else) no?\n");
         scanf("%d" , &doYouWantToPlay);
     }
     if (classRome.studentsNumber) {
         printf("There are %d students in the class.\n" , classRome.studentsNumber);
         Student bestStudent = classRome.students[highestAvgIndex], workStudent = classRome.students[lowestAvgIndex];
-        printf("Best student is %s, with ID of %d. Average is %f.\n", bestStudent.username, bestStudent.id, bestStudent.avrage);
-        printf("Worst student is %s, with ID of %d. Average is %f.\n", workStudent.username, workStudent.id, workStudent.avrage);
+        printf("Best student is %s, with ID of %d. Average is %f.\n", bestStudent.username, bestStudent.id, bestStudent.average);
+        printf("Worst student is %s, with ID of %d. Average is %f.\n", workStudent.username, workStudent.id, workStudent.average);
         // get class avg
         int i = 0;
         float classAvg = 0;
         for (; i < classRome.studentsNumber; i++) {
-            classAvg = classAvg + ( (float) classRome.students[i].avrage / classRome.studentsNumber );
+            classAvg = classAvg + ( (float) classRome.students[i].average / classRome.studentsNumber );
         }
         printf("Class average is %f.\n", classAvg);
         printf("Teacher is %s\n", classRome.teacherName);
@@ -122,7 +122,12 @@ int main(int argc, const char * argv[]) {
     }
     return 0;
 }
-
+/*************************************************************************
+Function name: setClassRome
+Input: ClassRoom *cls,char *teacherName
+Output: void
+The function operation: setting the class rome inital values tracher name, studentsNumber and the pointer to the students
+************************************************************************/
 void setClassRome(ClassRoom *cls,char *teacherName) {
     (*cls).teacherName = (char*) malloc((strlen(teacherName) + 1) * sizeof(char));
     strcpy(cls->teacherName, teacherName);
