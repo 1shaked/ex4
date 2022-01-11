@@ -7,7 +7,7 @@
 #include <iostream>
 #include <string.h>
 #include <stdio.h>
-#include <malloc.h>
+// #include <malloc.h>
 
 #define NUMBER_OF_GRADES 4
 #define NUMBER_OF_CHAR 80
