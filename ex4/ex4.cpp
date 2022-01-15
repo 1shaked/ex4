@@ -16,7 +16,7 @@
 
 typedef struct {
     char* username;
-    int id;
+    long long int id;
     int* grades;
     float average;
 } Student;
@@ -53,7 +53,7 @@ int main(int argc, const char * argv[]) {
         tempStudent.username = (char*) realloc(studentName,studentNameLen * sizeof(char));
         if (tempStudent.username == NULL) return 1;
         printf("Student ID?\n");
-        scanf("%d", &tempStudent.id);
+        scanf("%lld", &tempStudent.id);
         printf("Student Grades?\n");
         // this will re init the grades location
         tempStudent.grades = (int*) malloc(NUMBER_OF_GRADES * sizeof(int));
@@ -86,8 +86,8 @@ int main(int argc, const char * argv[]) {
     if (classRome.studentsNumber) {
         printf("There are %d students in the class.\n" , classRome.studentsNumber);
         Student *bestStudent = classRome.students + highestAvgIndex, *workStudent = classRome.students + lowestAvgIndex;
-        printf("Best student is %s, with ID of %d. Average is %f.\n", bestStudent->username, bestStudent->id, bestStudent->average);
-        printf("Worst student is %s, with ID of %d. Average is %f.\n", workStudent->username, workStudent->id, workStudent->average);
+        printf("Best student is %s, with ID of %lld. Average is %f.\n", bestStudent->username, bestStudent->id, bestStudent->average);
+        printf("Worst student is %s, with ID of %lld. Average is %f.\n", workStudent->username, workStudent->id, workStudent->average);
         // get class avg
         int i = 0;
         float classAvg = 0;
