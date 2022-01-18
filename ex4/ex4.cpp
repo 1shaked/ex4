@@ -7,7 +7,7 @@
 #include <iostream>
 #include <string.h>
 #include <stdio.h>
-// #include <malloc.h>
+#include <malloc.h>
 
 #define NUMBER_OF_GRADES 4
 #define NUMBER_OF_CHAR 80
@@ -28,6 +28,7 @@ typedef struct {
 } ClassRoom;
 void setClassRome(ClassRoom *cls,char *teacherName);
 void setStudent(ClassRoom *cls,int index ,Student *student);
+int FreeAllOnError(ClassRoom *classRome);
 int main(int argc, const char * argv[]) {
     ClassRoom classRome;
     printf("Hello, please enter teacher name:\n");
@@ -51,7 +52,7 @@ int main(int argc, const char * argv[]) {
         int studentNameLen =  ((int) strlen(studentName)) + 1;
         // take the min char for the student
         tempStudent.username = (char*) realloc(studentName,studentNameLen * sizeof(char));
-        if (tempStudent.username == NULL) return 1;
+        if (tempStudent.username == NULL) return FreeAllOnError(&classRome);
         printf("Student ID?\n");
         scanf("%lld", &tempStudent.id);
         printf("Student Grades?\n");
@@ -70,7 +71,7 @@ int main(int argc, const char * argv[]) {
         classRome.studentsNumber = classRome.studentsNumber + 1;
         if (classRome.studentsNumber == 1) classRome.students = (Student*) malloc(sizeof(Student));
         else classRome.students = (Student*) realloc(classRome.students ,classRome.studentsNumber * sizeof(Student));
-        if (classRome.students == NULL) return 1;
+        if (classRome.students == NULL) return FreeAllOnError(&classRome);
         int lastIndex = classRome.studentsNumber - 1;
         setStudent(&classRome, lastIndex, &tempStudent);
         float average = tempStudent.average;
@@ -135,4 +136,20 @@ void setStudent(ClassRoom *cls,int index ,Student *student) {
     (cls->students + index)->grades = student->grades;
     (cls->students + index)->average = student->average;
     (cls->students + index)->id = student->id;
+}
+/*********************************************************************
+Function name: FreeAllOnError
+Input: ClassRoom *classRome
+Output: void
+The function operation: when there is an error we need to free all the places that was occupied
+************************************************************************/
+int FreeAllOnError(ClassRoom *classRome) {
+    free(classRome->teacherName);
+    int i = 0;
+    for (; i < classRome->studentsNumber; i++) {
+        free((classRome->students + i)->username);
+        free((classRome->students + i)->grades);
+    }
+    return 1;
+    
 }
